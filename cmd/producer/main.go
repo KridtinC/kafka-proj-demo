@@ -31,7 +31,7 @@ func main() {
 			w.Write([]byte(err.Error()))
 		}
 
-		var partitionNo = int32(rand.Intn(3))
+		var partitionNo = int32(rand.Intn(5))
 		log.Println("partition: ", partitionNo)
 		log.Println(p.SendMessage(&sarama.ProducerMessage{
 			Topic:     "user-msg",
