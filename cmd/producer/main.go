@@ -31,12 +31,12 @@ func main() {
 			w.Write([]byte(err.Error()))
 		}
 
-		var partitionNo = int32(rand.Intn(3))
-		log.Println("partition: ", partitionNo)
+		var key = int32(rand.Intn(10))
+		log.Println("key: ", key)
 		log.Println(p.SendMessage(&sarama.ProducerMessage{
-			Topic:     "user-msg",
-			Partition: partitionNo,
-			Value:     sarama.StringEncoder(fmt.Sprint(val, ": ", partitionNo)),
+			Topic: "user-msg",
+			Key:   sarama.StringEncoder(fmt.Sprint(key)),
+			Value: sarama.StringEncoder(val),
 		}))
 
 		w.Write(resp)
@@ -49,7 +49,6 @@ func main() {
 
 func newProducer() (sarama.SyncProducer, error) {
 	conf := sarama.NewConfig()
-	conf.Producer.Partitioner = sarama.NewManualPartitioner
 	conf.Producer.RequiredAcks = sarama.WaitForAll
 	conf.Producer.Return.Successes = true
 	producer, err := sarama.NewSyncProducer(config.Brokers, conf)
